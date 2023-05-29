@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+
+  qsl_DB:
+    image: postgres:15.3-alpine3.18
+    container_name: qsl_DB
+    networks:
+      - qsl
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      # POSTGRES_HOST: ${DB_HOST}
+    volumes:
+      - qsl_DB_data1:/data/postgres
+      - qsl_DB_data2:/var/lib/postgresql/data
+
+  qsl_redis:
+    image: redis:7.0.11-alpine3.18
+    container_name: qsl_redis
+    restart: always
+    depends_on:
+      - qsl_DB
+    volumes:
+      - qsl_redis:/data
+    ports:
+      - '6379:6379'
+    networks:
+      - qsl
+
+  qsl_pgadmin:
+    image: dpage/pgadmin4:7.1
+    container_name: qsl_pgadmin
+    restart: unless-stopped
+
+    environment:
+      # PGDATA: ${PGDATA}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    networks:
+      - qsl
+    depends_on:
+      - qsl_DB
+    volumes:
+      - qsl_pgadmin:/var/lib/pgadmin
+
+networks:
+  qsl:
+    driver: bridge
+
+volumes:
+  qsl_DB_data1:
+  qsl_DB_data2:
+  qsl_pgadmin:
+  qsl_redis:
