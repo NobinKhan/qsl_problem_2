@@ -5,7 +5,8 @@ from django.core.wsgi import get_wsgi_application
 import environ
 
 env = environ.Env()
-BASE_DIR = environ.Path(__file__) - 3
+DOT_ENV_DIR = environ.Path(__file__) - 3
+env.read_env(os.path.join(DOT_ENV_DIR, ".env"))
 
 if env('ENVIRONMENT') == 'PRODUCTION':
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.production')

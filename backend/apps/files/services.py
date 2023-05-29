@@ -6,6 +6,7 @@ from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from apps.files.models import File
 from apps.files.utils import (
@@ -23,7 +24,7 @@ from django.contrib.auth.models import User
 def _validate_file_size(file_obj):
     max_size = settings.FILE_MAX_SIZE
 
-    if file_obj.size > max_size:
+    if isinstance(file_obj, InMemoryUploadedFile) and file_obj.size > max_size:
         raise ValidationError(f"File is too large. It should not exceed {bytes_to_mib(max_size)} MiB")
 
 
@@ -37,12 +38,12 @@ class FileStandardUploadService:
     1. The namespace
     2. The ability to reuse `_infer_file_name_and_type` (which can also be an util)
     """
-    def __init__(self, user: User, file_obj):
+    def __init__(self, user: User, file_obj: File):
         self.user = user
         self.file_obj = file_obj
 
     def _infer_file_name_and_type(self, file_name: str = "", file_type: str = "") -> Tuple[str, str]:
-        if not file_name:
+        if not file_name and isinstance(self.file_obj, InMemoryUploadedFile):
             file_name = self.file_obj.name
 
         if not file_type:

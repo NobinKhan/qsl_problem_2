@@ -1,7 +1,7 @@
 from os import path
 from settings.env import BASE_DIR, env
 
-env.read_env(path.join(BASE_DIR, ".env"))
+env.read_env(path.join(BASE_DIR, "../.env"))
 
 # Security key, debug and host config
 SECRET_KEY = env('DJANGO_SECRET_KEY', default="django-insecure-!5")
