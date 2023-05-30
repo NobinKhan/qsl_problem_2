@@ -6,9 +6,15 @@ from dotenv import load_dotenv
 
 
 if 'RENDER' in os.environ:
-    load_dotenv("../.env")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    upper_parent_dir = os.path.dirname(current_dir)
+    dotenv_path = os.path.join(upper_parent_dir, '.env')
+    load_dotenv(dotenv_path)
 else:
-    load_dotenv("../../.env")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    upper_parent_dir = os.path.dirname(os.path.dirname(current_dir))
+    dotenv_path = os.path.join(upper_parent_dir, '.env')
+    load_dotenv(dotenv_path)
 
 
 if os.environ.get('ENVIRONMENT') == 'PRODUCTION':
