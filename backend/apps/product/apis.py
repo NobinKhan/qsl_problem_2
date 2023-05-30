@@ -1,9 +1,10 @@
-from rest_framework import serializers
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import serializers, status
 
-from apps.product.models import Product
 from apps.product.selectors import product_list
 from apps.api.pagination import LimitOffsetPagination, get_paginated_response
+from apps.product.models import Product, Category, Brand, ProductType, Warrenty, Seller
 
 
 
@@ -79,4 +80,64 @@ class ProductList(APIView):
             request=request,
             view=self,
         )
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ("id", "name")
+
+
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ("id", "name")
+
+
+class ProductTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductType
+        fields = ("id", "name")
+
+
+class WarrentySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Warrenty
+        fields = ("id", "name")
+
+
+class SellerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seller
+        fields = ("id", "name")
+
+
+class ProductFilterList(APIView):
+
+    class OutputSerializer(serializers.Serializer):
+        catagory_list = CategorySerializer(many=True)
+        product_type_list = ProductTypeSerializer(many=True)
+        brand_list = BrandSerializer(many=True)
+        warrenty_list = WarrentySerializer(many=True)
+        seller_list = SellerSerializer(many=True)
+
+        class Meta:
+            fields = ("catagory_list", "product_type_list", "brand_list", "warrenty_list", 'seller_list')
+
+    def get(self, request):
+        catagories = Category.objects.all()
+        product_types = ProductType.objects.all()
+        brands = Brand.objects.all()
+        warrenties = Warrenty.objects.all()
+        sellers = Seller.objects.all()
+        data = {
+            "catagory_list": catagories,
+            "product_type_list": product_types,
+            "brand_list": brands,
+            "warrenty_list": warrenties,
+            "seller_list": sellers
+        }
+        serializer = self.OutputSerializer(data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
