@@ -1,7 +1,10 @@
+import os
 from os import path
 from settings.env import BASE_DIR, env
 
-if 'RENDER' in os.environ:
+if os.environ.get('ENVIRONMENT') == 'render':
+    env.read_env(path.join(BASE_DIR, ".env"))
+elif os.environ.get('ENVIRONMENT') == 'local':
     env.read_env(path.join(BASE_DIR, "../.env"))
 
 # Security key, debug and host config
