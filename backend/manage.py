@@ -6,8 +6,10 @@ import environ
 
 env = environ.Env()
 DOT_ENV_DIR = environ.Path(__file__) - 2
+print(DOT_ENV_DIR)
 if 'RENDER' not in os.environ:
     env.read_env(os.path.join(DOT_ENV_DIR, ".env"))
+print(DOT_ENV_DIR)
 
 
 def main():
