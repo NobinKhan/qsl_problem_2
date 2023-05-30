@@ -22,7 +22,6 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "apps.common.apps.CommonConfig",
     'apps.integrations.apps.IntegrationsConfig',
-    'apps.files.apps.FilesConfig',
     "apps.api.apps.ApiConfig",
     "apps.errors.apps.ErrorsConfig",
     "apps.product.apps.ProductConfig",

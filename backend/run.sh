@@ -41,7 +41,7 @@ if [[ $ENVIRONMENT == "local" && $PYP == "poetry" ]]; then
 
   # poetry update
 
-  poetry run python manage.py makemigrations common files errors api product
+  poetry run python manage.py makemigrations common errors api product
   poetry run python manage.py migrate
 
 elif [[ $ENVIRONMENT == "local" && $PYP == "venv" ]]; then

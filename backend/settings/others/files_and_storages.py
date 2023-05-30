@@ -2,7 +2,18 @@ import os
 
 from settings.env import BASE_DIR, env, env_to_enum
 
-from apps.files.enums import FileUploadStrategy, FileUploadStorage
+from enum import Enum
+
+
+class FileUploadStrategy(Enum):
+    STANDARD = "standard"
+    DIRECT = "direct"
+
+
+class FileUploadStorage(Enum):
+    LOCAL = "local"
+    S3 = "s3"
+
 
 
 FILE_UPLOAD_STRATEGY = env_to_enum(
