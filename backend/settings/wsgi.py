@@ -6,9 +6,11 @@ import environ
 
 env = environ.Env()
 DOT_ENV_DIR = environ.Path(__file__) - 3
+print(DOT_ENV_DIR)
 if 'RENDER' in os.environ:
     DOT_ENV_DIR = environ.Path(__file__) - 2
     env.read_env(os.path.join(DOT_ENV_DIR, ".env"))
+print(DOT_ENV_DIR)
 
 if env('ENVIRONMENT') == 'PRODUCTION':
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.production')
