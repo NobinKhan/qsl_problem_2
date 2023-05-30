@@ -6,7 +6,8 @@ import environ
 
 env = environ.Env()
 DOT_ENV_DIR = environ.Path(__file__) - 3
-if 'RENDER' not in os.environ:
+if 'RENDER' in os.environ:
+    DOT_ENV_DIR = environ.Path(__file__) - 1
     env.read_env(os.path.join(DOT_ENV_DIR, ".env"))
 
 if env('ENVIRONMENT') == 'PRODUCTION':

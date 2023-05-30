@@ -1,7 +1,7 @@
 from os import path
 from settings.env import BASE_DIR, env
 
-if 'RENDER' not in os.environ:
+if 'RENDER' in os.environ:
     env.read_env(path.join(BASE_DIR, "../.env"))
 
 # Security key, debug and host config
