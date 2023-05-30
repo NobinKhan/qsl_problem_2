@@ -1,9 +1,8 @@
-from settings.env import env
-
-SENTRY_DSN = env('SENTRY_DSN', default='')
+import os
+SENTRY_DSN = os.environ.get('SENTRY_DSN', default='')
 
 if SENTRY_DSN:
-    environment = env("SENTRY_ENVIRONMENT", default="local")
+    environment = os.environ.get("SENTRY_ENVIRONMENT", default="local")
     # This is related to Sentry's performance monitoring
     # https://docs.sentry.io/product/performance/
     # If you don't need it, just remove everything related to `track_performance`

@@ -2,25 +2,23 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-import environ
+from dotenv import load_dotenv
+
 
 if 'RENDER' in os.environ:
-    env = environ.Env()
-    DOT_ENV_DIR = environ.Path(__file__)
-    env.read_env(os.path.join(DOT_ENV_DIR, ".env"))
+    load_dotenv(".env")
 else:
-    env = environ.Env()
-    DOT_ENV_DIR = environ.Path(__file__) - 1
-    env.read_env(os.path.join(DOT_ENV_DIR, ".env"))
+    load_dotenv("../.env")
+
 
 
 
 def main():
-    if env('ENVIRONMENT') == 'PRODUCTION':
+    if os.environ.get('ENVIRONMENT') == 'PRODUCTION':
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.production')
-    elif env('ENVIRONMENT') == 'local':
+    elif os.environ.get('ENVIRONMENT') == 'local':
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.local')
-    elif 'RENDER' in os.environ or env('ENVIRONMENT') == 'render':
+    elif os.environ.get('ENVIRONMENT') == 'render':
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.render')
     try:
         from django.core.management import execute_from_command_line

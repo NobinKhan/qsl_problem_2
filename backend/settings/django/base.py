@@ -1,15 +1,10 @@
 import os
-from os import path
-from settings.env import BASE_DIR, env
+from settings.env import BASE_DIR
 
-if os.environ.get('ENVIRONMENT') == 'render':
-    env.read_env(path.join(BASE_DIR, ".env"))
-elif os.environ.get('ENVIRONMENT') == 'local':
-    env.read_env(path.join(BASE_DIR, "../.env"))
 
 # Security key, debug and host config
-SECRET_KEY = env('DJANGO_SECRET_KEY', default="django-insecure-!5")
-DEBUG = env.bool("DJANGO_DEBUG", default=True)
+SECRET_KEY = os.environ.get('SECRET_KEY', default="django-insecure-!5")
+DEBUG = os.environ.get("DEBUG", default=True)
 ALLOWED_HOSTS = ["*"]
 
 
@@ -81,11 +76,11 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     },
 }
 
@@ -96,12 +91,12 @@ DATABASES["default"]["ATOMIC_REQUESTS"] = True
 CACHE_TTL = 60 * 1500
 CACHES = {
     "default": {
-        "BACKEND": env('REDIS_BACKEND'),
-        "LOCATION": env('REDIS_LOCATION'),
+        "BACKEND": os.environ.get('REDIS_BACKEND'),
+        "LOCATION": os.environ.get('REDIS_LOCATION'),
     }
 }
-SESSION_ENGINE = env('SESSION_ENGINE')
-SESSION_CACHE_ALIAS = env('SESSION_CACHE_ALIAS')
+SESSION_ENGINE = os.environ.get('SESSION_ENGINE')
+SESSION_CACHE_ALIAS = os.environ.get('SESSION_CACHE_ALIAS')
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -124,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ROOT_URLCONF = "settings.urls"
 WSGI_APPLICATION = "settings.wsgi.application"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
+APP_DOMAIN = os.environ.get("APP_DOMAIN", default="http://localhost:8000")
 APPEND_SLASH=True
 
 # Custom Auth Config
@@ -141,11 +136,11 @@ LANGUAGE_CODE = "en-us"
 
 # media files config
 MEDIA_URL = '/media/'
-MEDIA_ROOT = path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Email setup

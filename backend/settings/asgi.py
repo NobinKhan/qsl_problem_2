@@ -1,18 +1,20 @@
 import os
 
 from django.core.asgi import get_asgi_application
-import environ
+from dotenv import load_dotenv
 
-env = environ.Env()
-DOT_ENV_DIR = environ.Path(__file__) - 3
-if 'RENDER' not in os.environ:
-    env.read_env(os.path.join(DOT_ENV_DIR, ".env"))
 
-if env('ENVIRONMENT') == 'PRODUCTION':
+if 'RENDER' in os.environ:
+    load_dotenv("../.env")
+else:
+    load_dotenv("../../.env")
+
+
+if os.environ.get('ENVIRONMENT') == 'PRODUCTION':
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.production')
-elif env('ENVIRONMENT') == 'local':
+elif os.environ.get('ENVIRONMENT') == 'local':
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.local')
-elif 'RENDER' in os.environ:
+elif os.environ.get('ENVIRONMENT') == 'render':
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'settings.django.render')
 
 application = get_asgi_application()
