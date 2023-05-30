@@ -8,4 +8,5 @@ set -o errexit
 # python manage.py migrate
 
 ls -la
-ls -la media/
+ls -la settings/
+ls -la ../
