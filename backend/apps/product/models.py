@@ -4,7 +4,7 @@ from apps.common.models import BaseModel
 
 
 class Category(BaseModel):
-    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True, unique=True)
 
     def __str__(self):
         if self.name:
@@ -13,7 +13,7 @@ class Category(BaseModel):
 
 
 class ProductType(BaseModel):
-    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True, unique=True)
 
     def __str__(self):
         if self.name:
@@ -22,7 +22,7 @@ class ProductType(BaseModel):
 
 
 class Brand(BaseModel):
-    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True, unique=True)
 
     def __str__(self):
         if self.name:
@@ -31,7 +31,7 @@ class Brand(BaseModel):
 
 
 class Warrenty(BaseModel):
-    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True, unique=True)
     period = models.DurationField(verbose_name='Period', null=True, blank=True)
 
     def __str__(self):
@@ -41,7 +41,7 @@ class Warrenty(BaseModel):
 
 
 class Seller(BaseModel):
-    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name='Name', max_length=100, null=True, blank=True, unique=True)
 
     def __str__(self):
         if self.name:

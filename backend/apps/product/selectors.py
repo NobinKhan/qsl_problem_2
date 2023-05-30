@@ -9,7 +9,11 @@ def product_list(*, filters=None) -> QuerySet[Product]:
     keyword = filters.get('search')
     qs = None
     if keyword is not None:
-        qs = Product.objects.filter(Q(name__icontains=keyword) | Q(discounted_sell_price__range=keyword))
+        qs = Product.objects.filter(
+            Q(name__icontains=keyword) | 
+            Q(description__icontains=keyword) |
+            Q(catagory__icontains=keyword)
+        )
     else:
         qs = ProductFilter(filters, Product.objects.all().order_by('-id')).qs
 

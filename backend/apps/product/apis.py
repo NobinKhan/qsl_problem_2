@@ -24,7 +24,7 @@ class ProductList(APIView):
 
         class Meta:
             model = Product
-            fields = ("id", "name", "description", "image", "catagory", "product_type", "brand", "normal_sell_price", "discounted_sell_price", "warrenty", 'seller')
+            fields = ("id", "name", "image", "catagory", "product_type", "brand", "normal_sell_price", "discounted_sell_price", "warrenty", 'seller')
 
         def get_catagory(self, attb):
             if attb.catagory:
@@ -54,12 +54,15 @@ class ProductList(APIView):
 
 
     class FilterSerializer(serializers.Serializer):
-        id = serializers.IntegerField(required=False, allow_null=False)
         name = serializers.CharField(required=False, allow_null=False, allow_blank=False)
         catagory = serializers.CharField(required=False, allow_null=False, allow_blank=False)
         product_type = serializers.CharField(required=False, allow_null=False, allow_blank=False)
         brand = serializers.CharField(required=False, allow_null=False, allow_blank=False)
-        normal_sell_price = serializers.CharField(required=False, allow_null=False, allow_blank=False)
+        sell_price_min = serializers.IntegerField(required=False, allow_null=False, min_value=0)
+        sell_price_max = serializers.IntegerField(required=False, allow_null=False, min_value=0)
+        warrenty = serializers.CharField(required=False, allow_null=False, allow_blank=False)
+        seller = serializers.CharField(required=False, allow_null=False, allow_blank=False)
+        search = serializers.CharField(required=False, allow_null=False, allow_blank=False)
 
 
     def get(self, request):

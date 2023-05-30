@@ -4,10 +4,15 @@ from apps.product.models import Product
 
 # Filter definition starts from here
 class ProductFilter(django_filters.FilterSet):
-    # generic = django_filters.CharFilter(field_name='generic_name')
-    # supplier = django_filters.CharFilter(field_name='supplier_Name')
+    catagory = django_filters.CharFilter(lookup_expr='icontains', field_name='catagory__name')
+    product_type = django_filters.CharFilter(lookup_expr='icontains', field_name='product_type__name')
+    brand = django_filters.CharFilter(lookup_expr='icontains', field_name='brand__name')
+    warrenty = django_filters.CharFilter(lookup_expr='icontains', field_name='warrenty__name')
+    seller = django_filters.CharFilter(lookup_expr='icontains', field_name='seller__name')
+    sell_price = django_filters.RangeFilter(field_name='discounted_sell_price')
+
 
     class Meta:
         model = Product
-        fields = ('name', "catagory", "product_type", "brand", "warrenty", "seller", "discounted_sell_price")
+        fields = ('name', "catagory", "product_type", "brand", "warrenty", "seller", "sell_price")
 
