@@ -14,19 +14,31 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useEffect, useState } from "react";
 
 const Products = () => {
-  const baseUrl = `http://localhost:8000/`;
+  const baseUrl = `https://qsl-solutions.onrender.com/`;
   const [products, setProduct] = useState([]);
+  const [filterData, setFilterData]=useState([])
+
+
   const [categoryList, setCategoryList] = useState([]);
   const [productType, setProductType] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [warrentyList, setWarrentyList] = useState([]);
   const [sellerList, setSellerList] = useState([]);
+
+  const [productCatgory, setProductCategory] = useState("");
+  const [productTypeFilter, setProductTypeFilter] = useState("");
+  const [productBrand, setProductBrand] = useState("");
+  console.log(productBrand);
+  const [productWarrentey, setProductWarrenty] = useState("");
+  const [productSeller, setProductSeller] = useState("");
+  const [minPrice, setMinPrice]=useState("")
+  const [maxPrice, setMaxPrice]=useState("")
   // const [filter, setfilter]=useState("")
 
   // product list data fetch
   useEffect(() => {
     const options = { method: "GET" };
-    fetch("http://127.0.0.1:8000/api/product/filter/list/", options)
+    fetch("https://qsl-solutions.onrender.com/api/product/filter/list/", options)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -42,36 +54,29 @@ const Products = () => {
   // product data fetch
   useEffect(() => {
     const options = { method: "GET" };
-    fetch("http://127.0.0.1:8000/api/product/list/", options)
+    fetch("https://qsl-solutions.onrender.com/api/product/list/", options)
       .then((response) => response.json())
       .then((data) => {
         setProduct(data?.results);
+        setFilterData(data?.results)
       })
       .catch((err) => console.error(err));
   }, []);
 
-  //     const options = {method: 'GET'};
-
-  // fetch('http://127.0.0.1:8000/api/product/list/?name=Micropack%20MHP-01%20Black%20Wired%20Headphone&catagory=headphone&sell_price_min=500&brand=Samsung&sell_price_max=950', options)
-  //   .then(response => response.json())
-  //   .then(response => console.log(response))
-  //   .catch(err => console.error(err));
-
-  const [productCatgory, setProductCategory] = useState("");
-  const [productTypeFilter, setProductTypeFilter] = useState("");
-  const [productBrand, setProductBrand] = useState("");
-  const [productWarrentey, setProductWarrenty] = useState("");
-  const [productSeller, setProductSeller] = useState("");
+ 
+  // const url = `https://qsl-solutions.onrender.com/api/product/list/?catagory=${productCatgory}&sell_price_min=${minPrice}&brand=${productBrand}&sell_price_max=${maxPrice}&product_type=${productTypeFilter}&warrenty=${productWarrentey}&seller=${productSeller}`;
 
   useEffect(() => {
     const options = { method: "GET" };
-    const url = `http://127.0.0.1:8000/api/product/list/?catagory=${productCatgory}&sell_price_min=500&brand=${productBrand}&sell_price_max=950&product_type=${productTypeFilter}&warrenty=${productWarrentey}&seller=${productSeller}`;
+    const url = `https://qsl-solutions.onrender.com/api/product/list/?&brand=${productBrand}`;
     console.log(url);
     fetch(url, options)
       .then((response) => response.json())
-      .then((data) => console.log("filterData", data))
+      .then((data) => {
+        setFilterData(data?.results); 
+      })
       .catch((err) => console.error(err));
-  });
+  },[productBrand]);
 
   return (
     <Box>
@@ -85,7 +90,52 @@ const Products = () => {
                 bgcolor="#fff"
                 p={1}
                 borderRadius="5px"
+              >  <Accordion
+              defaultExpanded={false}
+              style={{ margin: "0", boxShadow: "none" }}
+            >
+              <AccordionSummary
+                style={{ margin: "0", padding: "0px" }}
+                expandIcon={<KeyboardArrowUpIcon color="#BC6277" />}
+                id="panel2a-header"
               >
+                <Typography
+                  sx={{
+                    color: "#BC6277",
+                    fontWeight: 500,
+                    fontSize: 13,
+                  }}
+                >
+                  Brand List
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails style={{ margin: "0", padding: "0" }}>
+                <Box>
+                  <FormGroup>
+                    {brandList?.map((brandList, index) => (
+                      <FormControlLabel
+                        key={index}
+                        // value={"couple"}
+                        value={brandList?.name}
+                        onChange={(e) => setProductBrand(e.target.value)}
+                        control={<Checkbox className="box-0" />}
+                        label={
+                          <Typography
+                            sx={{
+                              color: "#BC6277",
+                              fontWeight: 500,
+                              fontSize: 13,
+                            }}
+                          >
+                            {brandList?.name}
+                          </Typography>
+                        }
+                      />
+                    ))}
+                  </FormGroup>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
                 <Accordion
                   defaultExpanded={true}
                   style={{ margin: "0", boxShadow: "none" }}
@@ -180,52 +230,7 @@ const Products = () => {
                     </Box>
                   </AccordionDetails>
                 </Accordion>
-                <Accordion
-                  defaultExpanded={false}
-                  style={{ margin: "0", boxShadow: "none" }}
-                >
-                  <AccordionSummary
-                    style={{ margin: "0", padding: "0px" }}
-                    expandIcon={<KeyboardArrowUpIcon color="#BC6277" />}
-                    id="panel2a-header"
-                  >
-                    <Typography
-                      sx={{
-                        color: "#BC6277",
-                        fontWeight: 500,
-                        fontSize: 13,
-                      }}
-                    >
-                      Brand List
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails style={{ margin: "0", padding: "0" }}>
-                    <Box>
-                      <FormGroup>
-                        {brandList?.map((brandList, index) => (
-                          <FormControlLabel
-                            key={index}
-                            // value={"couple"}
-                            value={brandList?.name}
-                            onChange={(e) => setProductBrand(e.target.value)}
-                            control={<Checkbox className="box-0" />}
-                            label={
-                              <Typography
-                                sx={{
-                                  color: "#BC6277",
-                                  fontWeight: 500,
-                                  fontSize: 13,
-                                }}
-                              >
-                                {brandList?.name}
-                              </Typography>
-                            }
-                          />
-                        ))}
-                      </FormGroup>
-                    </Box>
-                  </AccordionDetails>
-                </Accordion>
+              
                 <Accordion
                   defaultExpanded={false}
                   style={{ margin: "0", boxShadow: "none" }}
@@ -323,7 +328,7 @@ const Products = () => {
 
             <Grid item xs={12} sm={8} md={9.5}>
               <Grid container>
-                {products.map((product, index) => (
+                {filterData?.map((product, index) => (
                   <Grid key={index} item xs={12} sm={6} md={4}>
                     <Box
                       sx={{ backgroundColor: "#ccc", padding: "15px", m: 0.5 }}
@@ -338,6 +343,7 @@ const Products = () => {
                       <Box style={{ textAlign: "center" }} my={1}>
                         <Typography>Name:{product?.name}</Typography>
                       </Box>
+                      <Typography>{product?.brand}</Typography>
                       <Box style={{ textAlign: "center" }} mb={2}>
                         <Typography>
                           Price:{product?.discounted_sell_price}
