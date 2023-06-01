@@ -56,7 +56,7 @@ class ProductList(APIView):
 
     class FilterSerializer(serializers.Serializer):
         name = serializers.CharField(required=False, allow_null=False, allow_blank=False)
-        catagory = serializers.CharField(required=False, allow_null=False, allow_blank=False)
+        catagory = serializers.CharField(required=False, allow_null=False)
         product_type = serializers.CharField(required=False, allow_null=False, allow_blank=False)
         brand = serializers.CharField(required=False, allow_null=False, allow_blank=False)
         sell_price_min = serializers.IntegerField(required=False, allow_null=False, min_value=0)
@@ -71,12 +71,14 @@ class ProductList(APIView):
         filters_serializer = self.FilterSerializer(data=request.query_params)
         filters_serializer.is_valid(raise_exception=True)
 
-        prducts = product_list(filters=filters_serializer.validated_data)
+        products = product_list(filters=filters_serializer.validated_data)
+
+        # products = Product.objects.filter(catagory__name__in=['Headphone', 'Laptop', 'Phone'])
 
         return get_paginated_response(
             pagination_class=self.Pagination,
             serializer_class=self.OutputSerializer,
-            queryset=prducts,
+            queryset=products,
             request=request,
             view=self,
         )

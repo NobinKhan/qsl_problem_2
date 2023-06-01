@@ -15,6 +15,7 @@ def product_list(*, filters=None) -> QuerySet[Product]:
             Q(catagory__icontains=keyword)
         )
     else:
+        print(filters)
         qs = ProductFilter(filters, Product.objects.all().order_by('-id')).qs
 
     return qs
