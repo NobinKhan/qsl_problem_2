@@ -6,8 +6,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALLOWED_HOSTS =os.environ.get("ALLOWED_HOSTS", default=[])
 
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ORIGIN_WHITELIST =os.environ.get("CORS_ORIGIN_WHITELIST", default=[])
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ORIGIN_WHITELIST =os.environ.get("CORS_ORIGIN_WHITELIST", default=[])
 
 SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", default=True)
 
